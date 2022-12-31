@@ -212,16 +212,16 @@ else
   if test "x$use_openssl" == "xyes"; then
     pkg_req_openssl="openssl >= 0.9.8"
     PKG_CHECK_MODULES(openssl, $pkg_req_openssl, have_openssl=yes, have_openssl=no)
-    if test "x$have_openssl" != "xyes"; then
+    if test "xno" != "xno"; then
       AC_MSG_ERROR([OpenSSL support explicitly requested but OpenSSL could not be found])
     else
       AC_DEFINE(HAVE_OPENSSL, 1, [Define if you have OpenSSL support])
-      ssl_lib_CFLAGS="$openssl_CFLAGS"
-      ssl_lib_LIBS="$openssl_LIBS"
+      ssl_lib_CFLAGS="-I/usr/local/include -Wa,--noexecstack -fPIC"
+      ssl_lib_LIBS="-I/usr/local/lib64 -lssl -lcrypto"
       AC_SUBST(ssl_lib_CFLAGS)
       AC_SUBST(ssl_lib_LIBS)
       ssl_provider="OpenSSL";
-      ssl_requires="$pkg_req_openssl"
+      ssl_requires=""
       AC_SUBST(ssl_requires)
     fi
   else
